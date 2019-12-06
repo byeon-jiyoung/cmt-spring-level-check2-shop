@@ -10,23 +10,35 @@
 </head>
 <body>
 	<h3>주문정보 출력</h3>
-	<table>
-		<tr>
-			<th>주문번호</th>
-			<th>고객번호</th>
-			<th>고객명</th>
-			<th>상품번호</th>
-			<th>상품명</th>
-		</tr>
-		<c:forEach var="total" items="${totalList}">
+	<button id="excelButton">엑셀로 다운받기</button>
+	<c:if test="${!empty totalList}">
+		<table>
 			<tr>
-				<td>${total.orderNumber}</td>
-				<td>${total.customerNumber}</td>
-				<td>${total.customerName}</td>
-				<td>${total.productNumber}</td>
-				<td>${total.productName}</td>
+				<th>주문번호</th>
+				<th>고객번호</th>
+				<th>고객명</th>
+				<th>상품번호</th>
+				<th>상품명</th>
 			</tr>
-		</c:forEach>
-	</table>
+			<c:forEach var="total" items="${totalList}">
+				<tr>
+					<td>${total.orderNumber}</td>
+					<td>${total.customerNumber}</td>
+					<td>${total.customerName}</td>
+					<td>${total.productNumber}</td>
+					<td>${total.productName}</td>
+				</tr>
+			</c:forEach>
+		</table>
+	</c:if>
+	<c:if test="${empty totalList}">
+		주문정보가 없습니다.
+	</c:if>
 </body>
+
+<script>
+	document.getElementById("excelButton").onclick = function() {
+		location.href = "${pageContext.request.contextPath}/shop/excelDown";
+	}
+</script>
 </html>
