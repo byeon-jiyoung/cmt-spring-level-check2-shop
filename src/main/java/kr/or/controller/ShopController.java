@@ -48,7 +48,7 @@ public class ShopController {
 
 	@RequestMapping(value = "/excelDown", method = RequestMethod.POST)
 	/* @RequestBody String[] totalArray */
-	public String excelDown(Model model, HttpServletRequest request, @RequestParam("fileName") String fileName) throws IOException {
+	public String excelDown(Model model, HttpServletRequest request, @RequestBody String fileName) throws IOException {
 		System.out.println(fileName);
 		HSSFWorkbook workbook = new HSSFWorkbook(); // »õ·Î¿î ¿¢¼¿ÆÄÀÏ ¸¸µé±â
 		HSSFSheet sheet = workbook.createSheet(); // ¿¢¼¿¿¡¼­ »õ ½ÃÆ® ¸¸µé±â
