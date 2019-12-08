@@ -10,7 +10,7 @@
 	rel="stylesheet" type="text/css" />
 </head>
 <body>
-	<%-- <h3>주문정보 출력</h3>
+	<h3>주문정보 출력</h3>
 	<input type="text" id="fileName">
 	<button id="excelButton">엑셀로 다운받기</button>
 	<c:if test="${!empty totalList}">
@@ -35,32 +35,7 @@
 	</c:if>
 	<c:if test="${empty totalList}">
 		주문정보가 없습니다.
-	</c:if> --%>
-	<table>
-		<tr>
-			<td class="orderNumber">1</td>
-			<td class="customerNumber">1</td>
-			<td class="customerName">ㅇㄹㄴㅇ</td>
-			<td class="productNumber">2</td>
-			<td class="productName">ㅋㅋㅋ</td>
-		</tr>
-		<tr>
-			<td class="orderNumber">2</td>
-			<td class="customerNumber">1</td>
-			<td class="customerName">ㅇㄹㄴㅇ</td>
-			<td class="productNumber">1</td>
-			<td class="productName">ㅍㅍㅍ</td>
-		</tr>
-		<tr>
-			<td class="orderNumber">3</td>
-			<td class="customerNumber">2</td>
-			<td class="customerName">ㅀㄶ</td>
-			<td class="productNumber">3</td>
-			<td class="productName">ㅅㅅㅅ</td>
-		</tr>
-	</table>
-	<input type="text" id="fileName">
-	<button id="excelButton">엑셀로 다운받기</button>
+	</c:if>
 </body>
 
 <script>

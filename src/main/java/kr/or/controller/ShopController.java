@@ -29,19 +29,19 @@ public class ShopController {
 	public String shop(Model model, HttpServletRequest request) throws IOException {
 		logger.info("shop controller");
 
-//		RestTemplate restTemplate = new RestTemplate();
-//		ResponseEntity<String> responseEntity = restTemplate
-//				.getForEntity("http://localhost:8080/api/orders?auth=" + request.getParameter("auth"), String.class);
-//		String str = responseEntity.getBody();
-//
-//		ObjectMapper objectMapper = new ObjectMapper();
-//
-//		try {
-//			List<Object> totalList = objectMapper.readValue(str, new TypeReference<List<Object>>() {});
-//			model.addAttribute("totalList", totalList);
-//		} catch (NullPointerException e) {
-//			System.out.println("주문정보가 없습니다.");
-//		}
+		RestTemplate restTemplate = new RestTemplate();
+		ResponseEntity<String> responseEntity = restTemplate
+				.getForEntity("http://localhost:8080/api/orders?auth=" + request.getParameter("auth"), String.class);
+		String str = responseEntity.getBody();
+
+		ObjectMapper objectMapper = new ObjectMapper();
+
+		try {
+			List<Object> totalList = objectMapper.readValue(str, new TypeReference<List<Object>>() {});
+			model.addAttribute("totalList", totalList);
+		} catch (NullPointerException e) {
+			System.out.println("주문정보가 없습니다.");
+		}
 
 		return "shop/orders";
 	}
