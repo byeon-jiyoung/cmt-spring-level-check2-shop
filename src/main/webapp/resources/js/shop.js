@@ -1,5 +1,5 @@
-document.getElementById("xlxExcelButton").onclick = function() {
-	excelDown('xlxExcelDown');
+document.getElementById("xlsExcelButton").onclick = function() {
+	excelDown('xlsExcelDown');
 }
 
 document.getElementById("xlsxExcelButton2").onclick = function() {

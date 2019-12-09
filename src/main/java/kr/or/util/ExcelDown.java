@@ -4,13 +4,14 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
-import org.apache.poi.hssf.usermodel.HSSFCell;
-import org.apache.poi.hssf.usermodel.HSSFRow;
-import org.apache.poi.hssf.usermodel.HSSFSheet;
+
+import javax.servlet.http.HttpServletResponse;
+
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
-import org.apache.poi.xssf.usermodel.XSSFCell;
-import org.apache.poi.xssf.usermodel.XSSFRow;
-import org.apache.poi.xssf.usermodel.XSSFSheet;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -33,11 +34,22 @@ public class ExcelDown {
 		this.fileList = fileList;
 	}
 	
-	public void xlsExcelDown(Map<String, Object> fileMap) throws IOException {
-		HSSFWorkbook workbook = new HSSFWorkbook(); // ªı∑ŒøÓ ø¢ºø∆ƒ¿œ ∏∏µÈ±‚
-		HSSFSheet sheet = workbook.createSheet(); // ø¢ºøø°º≠ ªı Ω√∆Æ ∏∏µÈ±‚
-		HSSFRow row; // ø¢ºø¿« «‡¿∫ 0∫Œ≈Õ Ω√¿€
-		HSSFCell cell; // ø¢ºø¿« ºø¿∫ 0∫Œ≈Õ Ω√¿€
+	public void excelDown(HttpServletResponse response, Map<String, Object> fileMap, String fileType) throws IOException {
+		Workbook workbook = null; // ªı∑ŒøÓ ø¢ºø∆ƒ¿œ ∏∏µÈ±‚
+		
+		FileOutputStream fileOutputStream = null;
+		
+		if(fileType.equals("xls")) {
+			workbook = new HSSFWorkbook();
+			fileOutputStream = new FileOutputStream("c:/shop/"+fileMap.get("fileName")+".xls");
+		} else if(fileType.equals("xlsx")) {
+			workbook = new XSSFWorkbook();
+			fileOutputStream = new FileOutputStream("c:/shop/"+fileMap.get("fileName")+".xlsx");
+		}
+		
+		Sheet sheet = workbook.createSheet(); // ø¢ºøø°º≠ ªı Ω√∆Æ ∏∏µÈ±‚
+		Row row; // ø¢ºø¿« «‡¿∫ 0∫Œ≈Õ Ω√¿€
+		Cell cell; // ø¢ºø¿« ºø¿∫ 0∫Œ≈Õ Ω√¿€
 
 		row = sheet.createRow(0);
 		cell = row.createCell(0);
@@ -67,48 +79,6 @@ public class ExcelDown {
 				cellNum = 0;
 			}
 		}
-		
-		FileOutputStream fileOutputStream = new FileOutputStream("c:/shop/"+fileMap.get("fileName")+".xls");
-		workbook.write(fileOutputStream);
-		fileOutputStream.close();
-	}
-	
-	public void xlsxExcelDown(Map<String, Object> fileMap) throws IOException {
-		XSSFWorkbook workbook = new XSSFWorkbook();
-		XSSFSheet sheet = workbook.createSheet();
-		XSSFRow row;
-		XSSFCell cell;
-
-		row = sheet.createRow(0);
-		cell = row.createCell(0);
-		cell.setCellValue("¡÷πÆπ¯»£");
-		cell = row.createCell(1);
-		cell.setCellValue("∞Ì∞¥π¯»£");
-		cell = row.createCell(2);
-		cell.setCellValue("∞Ì∞¥∏Ì");
-		cell = row.createCell(3);
-		cell.setCellValue("ªÛ«∞π¯»£");
-		cell = row.createCell(4);
-		cell.setCellValue("ªÛ«∞∏Ì");
-		
-		ObjectMapper objectMapper = new ObjectMapper();
-		List<Object> totalList = objectMapper.convertValue(fileMap.get("totalArray"), new TypeReference<List<Object>>() {});
-		
-		int rowNum = 1;
-		int cellNum = 0;
-		row = sheet.createRow(rowNum);
-		for(int i=0; i<totalList.size(); i++) {
-			cell = row.createCell(cellNum++);
-			cell.setCellValue(totalList.get(i).toString());
-			
-			if(cellNum == 5) {
-				++rowNum;
-				row = sheet.createRow(rowNum);
-				cellNum = 0;
-			}
-		}
-		
-		FileOutputStream fileOutputStream = new FileOutputStream("c:/shop/"+fileMap.get("fileName")+".xlsx");
 		workbook.write(fileOutputStream);
 		fileOutputStream.close();
 	}

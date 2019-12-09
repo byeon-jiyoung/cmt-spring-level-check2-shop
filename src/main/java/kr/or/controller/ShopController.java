@@ -3,7 +3,10 @@ package kr.or.controller;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
+
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
@@ -13,8 +16,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.client.RestTemplate;
+
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+
 import kr.or.util.ExcelDown;
 
 @Controller
@@ -41,23 +46,21 @@ public class ShopController {
 		return "shop/orders";
 	}
 
-	@RequestMapping(value = "/xlxExcelDown", method = RequestMethod.POST)
-	public String excelDown(Model model, HttpServletRequest request, @RequestBody Map<String, Object> fileMap) throws IOException {
-		logger.info("excelDown controller");
+	@RequestMapping(value = "/xlsExcelDown", method = RequestMethod.POST)
+	public void excelDown(Model model, HttpServletResponse response, @RequestBody Map<String, Object> fileMap) throws IOException {
+		logger.info("xlxExcelDown controller");
 		
+		String fileType = "xls";
 		ExcelDown excelDown = new ExcelDown();
-		excelDown.xlsExcelDown(fileMap);
-		
-		return "shop/orders";
+		excelDown.excelDown(response, fileMap, fileType);
 	}
 	
 	@RequestMapping(value = "/xlsxExcelDown", method = RequestMethod.POST)
-	public String excelDown2(Model model, HttpServletRequest request, @RequestBody Map<String, Object> fileMap) throws IOException {
-		logger.info("excelDown2 controller");
+	public void excelDown2(Model model, HttpServletResponse response, @RequestBody Map<String, Object> fileMap) throws IOException {
+		logger.info("xlsxExcelDown controller");
 		
+		String fileType = "xlsx";
 		ExcelDown excelDown = new ExcelDown();
-		excelDown.xlsxExcelDown(fileMap);
-
-		return "shop/orders";
+		excelDown.excelDown(response, fileMap, fileType);
 	}
 }
