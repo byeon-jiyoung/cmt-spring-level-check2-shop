@@ -3,6 +3,7 @@ package kr.or.controller;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFRow;
@@ -16,7 +17,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.client.RestTemplate;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -48,8 +48,9 @@ public class ShopController {
 
 	@RequestMapping(value = "/excelDown", method = RequestMethod.POST)
 	/* @RequestBody String[] totalArray */
-	public String excelDown(Model model, HttpServletRequest request, @RequestBody String fileName) throws IOException {
-		System.out.println(fileName);
+	public String excelDown(Model model, HttpServletRequest request, @RequestBody Map<String, Object> fileMap) throws IOException {
+		logger.info("excelDown controller");
+		
 		HSSFWorkbook workbook = new HSSFWorkbook(); // 새로운 엑셀파일 만들기
 		HSSFSheet sheet = workbook.createSheet(); // 엑셀에서 새 시트 만들기
 		HSSFRow row; // 엑셀의 행은 0부터 시작
@@ -67,21 +68,24 @@ public class ShopController {
 		cell = row.createCell(4);
 		cell.setCellValue("상품명");
 		
-//		int rowNum = 1;
-//		int cellNum = 0;
-//		row = sheet.createRow(rowNum);
-//		for(int i=0; i<totalArray.length; i++) {
-//			cell = row.createCell(cellNum++);
-//			cell.setCellValue(totalArray[i]);
-//			
-//			if(cellNum == 5) {
-//				++rowNum;
-//				row = sheet.createRow(rowNum);
-//				cellNum = 0;
-//			}
-//		}
+		ObjectMapper objectMapper = new ObjectMapper();
+		List<Object> totalList = objectMapper.convertValue(fileMap.get("totalArray"), new TypeReference<List<Object>>() {});
 		
-		FileOutputStream fileOutputStream = new FileOutputStream("c:/shop/orders.xls");
+		int rowNum = 1;
+		int cellNum = 0;
+		row = sheet.createRow(rowNum);
+		for(int i=0; i<totalList.size(); i++) {
+			cell = row.createCell(cellNum++);
+			cell.setCellValue(totalList.get(i).toString());
+			
+			if(cellNum == 5) {
+				++rowNum;
+				row = sheet.createRow(rowNum);
+				cellNum = 0;
+			}
+		}
+		
+		FileOutputStream fileOutputStream = new FileOutputStream("c:/shop/"+fileMap.get("fileName")+".xls");
 		workbook.write(fileOutputStream);
 		fileOutputStream.close();
 
