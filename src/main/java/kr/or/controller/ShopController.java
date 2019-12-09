@@ -1,14 +1,9 @@
 package kr.or.controller;
 
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
-import org.apache.poi.hssf.usermodel.HSSFCell;
-import org.apache.poi.hssf.usermodel.HSSFRow;
-import org.apache.poi.hssf.usermodel.HSSFSheet;
-import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
@@ -20,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.client.RestTemplate;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import kr.or.util.ExcelDown;
 
 @Controller
 public class ShopController {
@@ -30,8 +26,7 @@ public class ShopController {
 		logger.info("shop controller");
 
 		RestTemplate restTemplate = new RestTemplate();
-		ResponseEntity<String> responseEntity = restTemplate
-				.getForEntity("http://localhost:8080/api/orders?auth=" + request.getParameter("auth"), String.class);
+		ResponseEntity<String> responseEntity = restTemplate.getForEntity("http://localhost:8080/api/orders?auth=" + request.getParameter("auth"), String.class);
 		String str = responseEntity.getBody();
 
 		ObjectMapper objectMapper = new ObjectMapper();
@@ -47,47 +42,21 @@ public class ShopController {
 	}
 
 	@RequestMapping(value = "/excelDown", method = RequestMethod.POST)
-	/* @RequestBody String[] totalArray */
 	public String excelDown(Model model, HttpServletRequest request, @RequestBody Map<String, Object> fileMap) throws IOException {
 		logger.info("excelDown controller");
 		
-		HSSFWorkbook workbook = new HSSFWorkbook(); // 새로운 엑셀파일 만들기
-		HSSFSheet sheet = workbook.createSheet(); // 엑셀에서 새 시트 만들기
-		HSSFRow row; // 엑셀의 행은 0부터 시작
-		HSSFCell cell; // 엑셀의 셀은 0부터 시작
-
-		row = sheet.createRow(0);
-		cell = row.createCell(0);
-		cell.setCellValue("주문번호");
-		cell = row.createCell(1);
-		cell.setCellValue("고객번호");
-		cell = row.createCell(2);
-		cell.setCellValue("고객명");
-		cell = row.createCell(3);
-		cell.setCellValue("상품번호");
-		cell = row.createCell(4);
-		cell.setCellValue("상품명");
+		ExcelDown excelDown = new ExcelDown();
+		excelDown.xlsExcelDown(fileMap);
 		
-		ObjectMapper objectMapper = new ObjectMapper();
-		List<Object> totalList = objectMapper.convertValue(fileMap.get("totalArray"), new TypeReference<List<Object>>() {});
+		return "shop/orders";
+	}
+	
+	@RequestMapping(value = "/excelDown2", method = RequestMethod.POST)
+	public String excelDown2(Model model, HttpServletRequest request, @RequestBody Map<String, Object> fileMap) throws IOException {
+		logger.info("excelDown2 controller");
 		
-		int rowNum = 1;
-		int cellNum = 0;
-		row = sheet.createRow(rowNum);
-		for(int i=0; i<totalList.size(); i++) {
-			cell = row.createCell(cellNum++);
-			cell.setCellValue(totalList.get(i).toString());
-			
-			if(cellNum == 5) {
-				++rowNum;
-				row = sheet.createRow(rowNum);
-				cellNum = 0;
-			}
-		}
-		
-		FileOutputStream fileOutputStream = new FileOutputStream("c:/shop/"+fileMap.get("fileName")+".xls");
-		workbook.write(fileOutputStream);
-		fileOutputStream.close();
+		ExcelDown excelDown = new ExcelDown();
+		excelDown.xlsxExcelDown(fileMap);
 
 		return "shop/orders";
 	}
