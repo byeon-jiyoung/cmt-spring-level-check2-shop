@@ -1,13 +1,18 @@
-document.getElementById("excelButton").onclick = function() {
-	excelDown('excelDown');
+document.getElementById("xlxExcelButton").onclick = function() {
+	excelDown('xlxExcelDown');
 }
 
-document.getElementById("excelButton2").onclick = function() {
-	excelDown('excelDown2');
+document.getElementById("xlsxExcelButton2").onclick = function() {
+	excelDown('xlsxExcelDown');
 }
 
 function excelDown(pathString) {
 	var fileName = document.getElementById("fileName").value;
+	
+	if(fileName == "") {
+		alert("파일명을 입력하세요");
+		return false;
+	}
 	
 	var orderNumbers = document.getElementsByClassName("orderNumber");
 	var customerNumbers = document.getElementsByClassName("customerNumber");
@@ -49,8 +54,10 @@ function excelDown(pathString) {
 	httpRequest.onload = function() {
 		if(httpRequest.readyState==4 && httpRequest.status == 200) { //readyState => 데이터 전부 받은 상태 & status => 요청성공
 			alert("다운성공");
+			document.getElementById("fileName").value = "";
 		}else {
 			alert("다운실패");
+			document.getElementById("fileName").value = "";
 		}
 	}
 }

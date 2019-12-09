@@ -41,7 +41,7 @@ public class ShopController {
 		return "shop/orders";
 	}
 
-	@RequestMapping(value = "/excelDown", method = RequestMethod.POST)
+	@RequestMapping(value = "/xlxExcelDown", method = RequestMethod.POST)
 	public String excelDown(Model model, HttpServletRequest request, @RequestBody Map<String, Object> fileMap) throws IOException {
 		logger.info("excelDown controller");
 		
@@ -51,7 +51,7 @@ public class ShopController {
 		return "shop/orders";
 	}
 	
-	@RequestMapping(value = "/excelDown2", method = RequestMethod.POST)
+	@RequestMapping(value = "/xlsxExcelDown", method = RequestMethod.POST)
 	public String excelDown2(Model model, HttpServletRequest request, @RequestBody Map<String, Object> fileMap) throws IOException {
 		logger.info("excelDown2 controller");
 		

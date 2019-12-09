@@ -11,9 +11,9 @@
 </head>
 <body>
 	<h3>주문정보 출력</h3>
-	<input type="text" id="fileName">
-	<button id="excelButton">엑셀로 다운받기1</button>
-	<button id="excelButton2">엑셀로 다운받기2</button>
+	<input type="text" id="fileName" placeholder="파일명을 입력하세요">
+	<button id="xlxExcelButton">xls 엑셀로 다운받기</button>
+	<button id="xlsxExcelButton2">xlsx 엑셀로 다운받기</button>
 	<c:if test="${!empty totalList}">
 		<table>
 			<tr>
